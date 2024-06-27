@@ -1,4 +1,4 @@
-package com.example.app_somar
+package com.example.somar
 
 import io.flutter.embedding.android.FlutterActivity
 

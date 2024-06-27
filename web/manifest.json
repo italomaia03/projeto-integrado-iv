@@ -1,6 +1,6 @@
 {
-    "name": "app_somar",
-    "short_name": "app_somar",
+    "name": "somar",
+    "short_name": "somar",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

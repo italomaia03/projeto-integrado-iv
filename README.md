@@ -1,4 +1,4 @@
-# app_somar
+# somar
 
 A new Flutter project.
 
