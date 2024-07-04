@@ -24,6 +24,7 @@
 .project
 .settings/
 .vscode/*
+.metadata
 
 # Flutter repo-specific
 /bin/cache/
