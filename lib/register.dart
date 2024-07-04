@@ -123,7 +123,7 @@ class _RegisterViewState extends State<RegisterView> {
                   children: <Widget>[
                     Checkbox(value: false, onChanged: (bool? value) {}),
                     const Expanded(
-                      child: const Text('I agree to the terms of privacy'),
+                      child: Text('I agree to the terms of privacy'),
                     ),
                   ],
                 ),

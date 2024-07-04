@@ -6,6 +6,23 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var row = Column(
+                children: <Widget>[
+                    Row(
+                    children: <Widget>[
+                      Row(children: [
+                        Checkbox(value: false, onChanged: (bool? value) {},),
+                      const Text('Remember Password'),
+                      ],)
+                    ],
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Forgot my password'),
+                  ),
+                ],
+
+          );
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -40,21 +57,7 @@ class LoginView extends StatelessWidget {
                 obscureText: true,
               ),
               const SizedBox(height: 4.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Checkbox(value: false, onChanged: (bool? value) {}),
-                      const Text('Remember Password'),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Forgot my password'),
-                  ),
-                ],
-              ),
+              row,
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {},
