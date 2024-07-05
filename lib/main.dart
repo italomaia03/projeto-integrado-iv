@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:somar/login_view.dart';
-import 'package:somar/register.dart';
+import 'package:somar/pages/login_view.dart';
+import 'package:somar/pages/register.dart';
 
 void main() {
+  final textController = TextEditingController();
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       useMaterial3: true,
     ),
-    home: const LoginView(),
+    home: LoginView(
+        usernameController: textController,
+        passwordController: textController
+    ),
     initialRoute: '/',
     routes: {
-      '/login': (context) => const LoginView(),
+      '/login': (context) => LoginView(
+        usernameController: textController,
+        passwordController: textController,
+      ),
       '/register': (context) => RegisterView()
     },
   ));
