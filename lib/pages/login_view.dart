@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:somar/components/TextInput.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  final usernameController;
+  final passwordController;
+  LoginView({
+    super.key,
+    required this.usernameController,
+    required this.passwordController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +48,10 @@ class LoginView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 50.0),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
+              TextInput(
+                controller: usernameController,
+                hintText: 'E-mail',
+                obscureText: false,
               ),
               const SizedBox(height: 20.0),
               const TextField(
