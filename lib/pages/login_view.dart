@@ -3,33 +3,34 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:somar/components/TextInput.dart';
 
 class LoginView extends StatelessWidget {
-  final usernameController;
-  final passwordController;
-  LoginView({
-    super.key,
-    required this.usernameController,
-    required this.passwordController,
-  });
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
     var row = Column(
-                children: <Widget>[
-                    Row(
-                    children: <Widget>[
-                      Row(children: [
-                        Checkbox(value: false, onChanged: (bool? value) {},),
-                      const Text('Remember Password'),
-                      ],)
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Forgot my password'),
-                  ),
-                ],
-
-          );
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Row(
+              children: [
+                Checkbox(
+                  value: false,
+                  onChanged: (bool? value) {},
+                ),
+                const Text('Remember Password'),
+              ],
+            )
+          ],
+        ),
+        TextButton(
+          onPressed: () {},
+          child: const Text('Forgot my password'),
+        ),
+      ],
+    );
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
