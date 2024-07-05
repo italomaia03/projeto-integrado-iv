@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:somar/pages/login_view.dart';
 import 'package:somar/pages/register.dart';
+import 'package:somar/pages/splash_view.dart';
 
 void main() {
-  final textController = TextEditingController();
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       useMaterial3: true,
     ),
-    home: LoginView(
-        usernameController: textController,
-        passwordController: textController
-    ),
+    home: SplashView(),
     initialRoute: '/',
     routes: {
-      '/login': (context) => LoginView(
-        usernameController: textController,
-        passwordController: textController,
-      ),
+      '/login': (context) => LoginView(),
       '/register': (context) => RegisterView()
     },
   ));
