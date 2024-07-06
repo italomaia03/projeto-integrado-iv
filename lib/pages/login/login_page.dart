@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:somar/bd/database.dart';
+import 'package:somar/db/database.dart';
 import 'package:somar/models/usuario.dart';
 import 'package:somar/routes.dart';
 import 'package:somar/widgets/custom_button.dart';

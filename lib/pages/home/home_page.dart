@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:somar/bd/database.dart';
+import 'package:somar/db/database.dart';
 import 'package:somar/routes.dart';
 
 class HomePage extends StatefulWidget {
