@@ -18,48 +18,52 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool buttonClick = false;
-  
-  get usuario => null;
-  
+
+  Usuario? usuario;
+
   void _login() {
-    if(buttonClick){
+    if (buttonClick) {
       return;
     }
 
-    setState(
-      () {
+    setState(() {
       buttonClick = true;
     });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Validando informações...'),
+      ),
+    );
+
+    if (_formKey.currentState!.validate()) {
+      usuario = Database().login(
+        textUsuario.text.trim(),
+        password.text.trim(),
+      );
+    }
 
     // Gambiarra: não pode ter delay em login, isso é somente uma simulação
     Future.delayed(
       const Duration(seconds: 2),
-      (){
-        if(_formKey.currentState!.validate()){
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Buscando usuários...'),
-              ),
-          );
-          Usuario? usuario = Database().login(textUsuario.text.trim(), password.text.trim());
-        }
-
-        if(usuario == null){
+      () {
+        if (usuario == null) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Usuário não encontrado!'),
+              content: Text('usuário não encontrado'),
               backgroundColor: Colors.red,
-            ),);
+            ),
+          );
         } else {
-          // usuario existe
+          Database().usuarioLogado = usuario;
+          Navigator.of(context).pushReplacementNamed(Routes.home);
         }
-
 
         setState(() {
           buttonClick = false;
         });
-      }
+      },
     );
   }
 
@@ -81,10 +85,10 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Informe o seu E-mail',
                   icon: Icons.person,
                   validator: (value) {
-                    if(value == null){
+                    if (value == null) {
                       return 'Informe um e-mail';
                     }
-                    if (value.trim() == ''){
+                    if (value.trim() == '') {
                       return 'Informe um e-mail';
                     }
                     return null;
@@ -97,11 +101,11 @@ class _LoginPageState extends State<LoginPage> {
                   icon: Icons.password,
                   isPassword: true,
                   validator: (value) {
-                    if(value == null){
+                    if (value == null) {
                       return 'Informe sua senha';
                     }
-                    if (value.trim() == ''){
-                       return 'Informe sua senha';
+                    if (value.trim() == '') {
+                      return 'Informe sua senha';
                     }
                     return null;
                   },
@@ -121,30 +125,30 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 40),
                 Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const SizedBox(height: 10),
-                    IconButton(
-                      icon: Icon(Icons.abc),
-                      onPressed: () => true,
-                      iconSize: 36.0,
-                    ),
-                    const SizedBox(height: 20),
-                    IconButton(
-                      icon: Icon(Icons.abc),
-                      onPressed: () => true,
-                      iconSize: 36.0,
-                    ),
-                    const SizedBox(height: 10),
-                    IconButton(
-                      icon: Icon(Icons.abc),
-                      onPressed: () => true,
-                      iconSize: 36.0,
-                    ),
-                  ],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SizedBox(height: 10),
+                      IconButton(
+                        icon: Icon(Icons.abc),
+                        onPressed: () => true,
+                        iconSize: 36.0,
+                      ),
+                      const SizedBox(height: 20),
+                      IconButton(
+                        icon: Icon(Icons.abc),
+                        onPressed: () => true,
+                        iconSize: 36.0,
+                      ),
+                      const SizedBox(height: 10),
+                      IconButton(
+                        icon: Icon(Icons.abc),
+                        onPressed: () => true,
+                        iconSize: 36.0,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
                 const SizedBox(height: 40.0),
                 Center(
                   child: TextButton(
