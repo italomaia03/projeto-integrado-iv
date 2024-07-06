@@ -4,8 +4,9 @@ class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
   @override
-  _RegisterViewState createState() => _RegisterViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
+
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
