@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:somar/bd/database.dart';
+import 'package:somar/models/usuario.dart';
 import 'package:somar/routes.dart';
 import 'package:somar/widgets/custom_button.dart';
 import 'package:somar/widgets/custom_edit.dart';
@@ -17,7 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool buttonClick = false;
-
+  
+  get usuario => null;
+  
   void _login() {
     if(buttonClick){
       return;
@@ -33,15 +36,31 @@ class _LoginPageState extends State<LoginPage> {
       const Duration(seconds: 2),
       (){
         if(_formKey.currentState!.validate()){
-          // posso fazer o login
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Buscando usuários...'),
+              ),
+          );
+          Usuario? usuario = Database().login(textUsuario.text.trim(), password.text.trim());
         }
+
+        if(usuario == null){
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Usuário não encontrado!'),
+              backgroundColor: Colors.red,
+            ),);
+        } else {
+          // usuario existe
+        }
+
+
         setState(() {
           buttonClick = false;
         });
       }
     );
-
-    
   }
 
   @override
@@ -98,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(Routes.register);
                   },
-                  child: const Text('Register now'),
+                  child: const Text('Registre-se'),
                 ),
                 const SizedBox(height: 40),
                 Center(
@@ -130,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: TextButton(
                     onPressed: () {},
-                    child: const Text('Terms and Policies of Privacy'),
+                    child: const Text('Termos e Política de Privacidade'),
                   ),
                 ),
               ],
