@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:somar/bd/database.dart';
-import 'package:somar/models/produtor.dart';
+import 'package:somar/routes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                                       Text(item.titulo, style: const TextStyle(
                                         fontWeight: FontWeight.w400, fontSize: 16,
                                       ),),
-                                      Text('Quandidade: ${item.quantidade.toString()}',
+                                      Text('Quantidade: ${item.quantidade.toString()}',
                                       ),
                                     ],
                                   ),
@@ -71,15 +71,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          setState(() {
-            Database().addProduto(Produto(
-              codigo: Database().produtos.length+1,
-              data: 'teste',
-              titulo: 'Título teste',
-              quantidade: 10,
-            ));
-          },
+        onPressed: () async {
+          await Navigator.of(context).pushNamed(Routes.produtos);
+
+          setState(
+            () { },
           );
         },
         child: const Icon(Icons.add),

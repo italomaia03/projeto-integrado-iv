@@ -12,10 +12,22 @@ class Database{
   // Outra gambiarra
   List<Usuario> usuarios = [
     Usuario(
-      codigo: 40028922,
+      codigo: 1,
       nome: 'Fabrício Freitas',
       email: 'fabricio@gmail.com',
-      senha: 'naruto',
+      senha: 'f123',
+    ),
+    Usuario(
+      codigo: 2,
+      nome: 'Ricardo Vilela',
+      email: 'ricardo@gmail.com',
+      senha: 'r123',
+    ),
+    Usuario(
+      codigo: 3,
+      nome: 'Allysson Alex',
+      email: 'alex@gmail.com',
+      senha: 'a123',
     ),
   ];
 
