@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:somar/routes.dart';
 import 'package:somar/widgets/custom_button.dart';
 import 'package:somar/widgets/custom_edit.dart';
@@ -18,7 +19,29 @@ class _LoginPageState extends State<LoginPage> {
   bool buttonClick = false;
 
   void _login() {
-    // Implement your login logic here
+    if(buttonClick){
+      return;
+    }
+
+    setState(
+      () {
+      buttonClick = true;
+    });
+
+    // Gambiarra: não pode ter delay em login, isso é somente uma simulação
+    Future.delayed(
+      const Duration(seconds: 2),
+      (){
+        if(_formKey.currentState!.validate()){
+          // posso fazer o login
+        }
+        setState(() {
+          buttonClick = false;
+        });
+      }
+    );
+
+    
   }
 
   @override
@@ -55,7 +78,13 @@ class _LoginPageState extends State<LoginPage> {
                   icon: Icons.password,
                   isPassword: true,
                   validator: (value) {
-                    return ''; // Add your validation logic here
+                    if(value == null){
+                      return 'Informe sua senha';
+                    }
+                    if (value.trim() == ''){
+                       return 'Informe sua senha';
+                    }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 40),
@@ -71,7 +100,33 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text('Register now'),
                 ),
-                const SizedBox(height: 100.0),
+                const SizedBox(height: 40),
+                Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const SizedBox(height: 10),
+                    IconButton(
+                      icon: Icon(Icons.abc),
+                      onPressed: () => true,
+                      iconSize: 36.0,
+                    ),
+                    const SizedBox(height: 20),
+                    IconButton(
+                      icon: Icon(Icons.abc),
+                      onPressed: () => true,
+                      iconSize: 36.0,
+                    ),
+                    const SizedBox(height: 10),
+                    IconButton(
+                      icon: Icon(Icons.abc),
+                      onPressed: () => true,
+                      iconSize: 36.0,
+                    ),
+                  ],
+                ),
+              ),
+                const SizedBox(height: 40.0),
                 Center(
                   child: TextButton(
                     onPressed: () {},
