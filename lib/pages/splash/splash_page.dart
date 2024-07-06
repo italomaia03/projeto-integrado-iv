@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/routes.dart';
-import 'package:flutter_app/widgets/custom_logo.dart';
+import 'package:somar/routes.dart';
+import 'package:somar/widgets/custom_logo.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

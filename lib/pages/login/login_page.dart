@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/routes.dart';
-import 'package:flutter_app/widgets/custom_button.dart';
-import 'package:flutter_app/widgets/custom_edit.dart';
-import 'package:flutter_app/widgets/custom_logo.dart';
+import 'package:somar/routes.dart';
+import 'package:somar/widgets/custom_button.dart';
+import 'package:somar/widgets/custom_edit.dart';
+import 'package:somar/widgets/custom_logo.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,7 +39,13 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Informe o seu E-mail',
                   icon: Icons.person,
                   validator: (value) {
-                    return ''; // Add your validation logic here
+                    if(value == null){
+                      return 'Informe um e-mail';
+                    }
+                    if (value.trim() == ''){
+                      return 'Informe um e-mail';
+                    }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 40),

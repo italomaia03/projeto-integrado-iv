@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/pages/login/login_page.dart';
-import 'package:flutter_app/pages/splash/splash_page.dart';
-import 'package:flutter_app/routes.dart';
+import 'package:somar/pages/login/login_page.dart';
+import 'package:somar/pages/splash/splash_page.dart';
+import 'package:somar/routes.dart';
 
 import 'pages/register/register.dart';
 
