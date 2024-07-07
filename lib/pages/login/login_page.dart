@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:somar/db/database.dart';
-import 'package:somar/models/usuario.dart';
+import 'package:somar/controllers/auth_controller.dart';
+import 'package:somar/errors/validation_exception.dart';
 import 'package:somar/routes.dart';
+import 'package:somar/utils/validator_login_fields.dart';
 import 'package:somar/widgets/custom_button.dart';
 import 'package:somar/widgets/custom_edit.dart';
 import 'package:somar/widgets/custom_logo.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key, required this.authController});
+
+  final AuthController authController;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -17,54 +20,33 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController textUsuario = TextEditingController();
   final TextEditingController password = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool buttonClick = false;
 
-  Usuario? usuario;
-
-  void _login() {
-    if (buttonClick) {
-      return;
-    }
-
-    setState(() {
-      buttonClick = true;
-    });
-
+  void _showFeedbackMessage(message, status) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Validando informações...'),
+      SnackBar(
+        content: Text(message),
+        backgroundColor: status == 'ok' ? Colors.green : Colors.red,
       ),
     );
+    Future.delayed(Duration(seconds: 2), () {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+  }
 
-    if (_formKey.currentState!.validate()) {
-      usuario = Database().login(
-        textUsuario.text.trim(),
-        password.text.trim(),
-      );
+  void _login() {
+
+
+    try {
+      if (!_formKey.currentState!.validate()) {
+        throw ValidationException('Preencha todos os campos de maneira adequada');
+      }
+      var email = textUsuario.text;
+      widget.authController.get(email);
+      _showFeedbackMessage('Usuário $email autenticado com sucesso', 'ok');
+      Navigator.of(context).pushReplacementNamed(Routes.home);
+    } on Exception catch (e) {
+      _showFeedbackMessage(e.toString(), 'error');
     }
-
-    // Gambiarra: não pode ter delay em login, isso é somente uma simulação
-    Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        if (usuario == null) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('usuário não encontrado'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        } else {
-          Database().usuarioLogado = usuario;
-          Navigator.of(context).pushReplacementNamed(Routes.home);
-        }
-
-        setState(() {
-          buttonClick = false;
-        });
-      },
-    );
   }
 
   @override
@@ -84,15 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: textUsuario,
                   hintText: 'Informe o seu E-mail',
                   icon: Icons.person,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Informe um e-mail';
-                    }
-                    if (value.trim() == '') {
-                      return 'Informe um e-mail';
-                    }
-                    return null;
-                  },
+                  validator: ValidatorLoginFields.validateEmail,
                 ),
                 const SizedBox(height: 40),
                 CustomEdit(
@@ -100,21 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Informe a sua senha',
                   icon: Icons.password,
                   isPassword: true,
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Informe sua senha';
-                    }
-                    if (value.trim() == '') {
-                      return 'Informe sua senha';
-                    }
-                    return null;
-                  },
+                  validator: ValidatorLoginFields.validatePassword
                 ),
                 const SizedBox(height: 40),
                 CustomButton(
                   caption: 'Entrar',
                   onTap: _login,
-                  loading: buttonClick,
                 ),
                 const SizedBox(height: 20.0),
                 TextButton(
