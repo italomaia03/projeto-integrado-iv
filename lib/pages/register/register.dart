@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:somar/controllers/auth_controller.dart';
+import 'package:somar/errors/validation_exception.dart';
+import 'package:somar/models/user_model.dart';
+import 'package:somar/utils/validator_login_fields.dart';
+import 'package:somar/utils/validator_register_fields.dart';
+import 'package:somar/widgets/custom_edit.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  RegisterView({super.key, required this.authController});
+
+  final AuthController authController;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
 }
 
-
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _functionalIdController = TextEditingController();
+  final TextEditingController _functionController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,96 +57,63 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
                 const SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'User Functional ID',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomEdit(
+                  controller: _functionalIdController,
+                  hintText: 'ID Funcional',
+                  validator: ValidatorRegisterFields.validateUserFunctionalId,
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Function',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomEdit(
+                  controller: _functionController,
+                  hintText: 'Cargo',
+                  validator: ValidatorRegisterFields.validateName,
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'First Name',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomEdit(
+                  controller: _firstNameController,
+                  hintText: 'Nome',
+                  validator: ValidatorRegisterFields.validateName,
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Last Name',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomEdit(
+                  controller: _lastNameController,
+                  hintText: 'Sobrenome',
+                  validator: ValidatorRegisterFields.validateName,
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'E-mail',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter an email';
-                    }
-                    String pattern = r'\w+@\w+\.\w+';
-                    RegExp regex = RegExp(pattern);
-                    if (!regex.hasMatch(value)) {
-                      return 'Enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
+                CustomEdit(
+                    controller: _emailController,
+                    hintText: 'E-mail',
+                    validator: ValidatorLoginFields.validateEmail),
                 const SizedBox(height: 10.0),
-                TextFormField(
+                CustomEdit(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
+                  hintText: 'Senha',
+                  validator: ValidatorLoginFields.validatePassword,
+                  isPassword: true,
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
+                CustomEdit(
                   controller: _repeatPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Repeat Password',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
+                  isPassword: true,
+                  hintText: 'Repita a senha',
+                  validator: (value) =>
+                      ValidatorRegisterFields.validateRepeatPassword(
+                          value, _passwordController.text),
                 ),
                 const SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    Checkbox(value: false, onChanged: (bool? value) {}),
-                    const Expanded(
-                      child: Text('I agree to the terms of privacy'),
-                    ),
-                  ],
-                ),
+                CheckboxListTile(
+                    title: Text('Eu concordo com os termos de privacidades'),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: _isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isChecked = value!;
+                      });
+                    }),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Implement registration logic here
-                    }
-                  },
+                  onPressed: _register,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
@@ -150,5 +130,43 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  void _showFeedbackMessage(message, status) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: status == 'ok' ? Colors.green : Colors.red,
+      ),
+    );
+    Future.delayed(Duration(seconds: 2), () {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+  }
+
+  void _register() {
+    try {
+      if (!_formKey.currentState!.validate()) {
+        throw ValidationException('Preencha todos os campos de maneira adequada');
+      }
+      if (!_isChecked) {
+        throw ValidationException('É necessário aceitar os termos de privacidade');
+      }
+      var model = UserModel(
+          _firstNameController.text,
+          _lastNameController.text,
+          _emailController.text,
+          _passwordController.text,
+          _functionController.text,
+          _functionalIdController.text
+      );
+      widget.authController.save(model);
+      _showFeedbackMessage('Usuário ${_emailController.text} cadastrado com sucesso', 'ok');
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+    } on Exception catch (e) {
+      _showFeedbackMessage(e.toString(), 'error');
+    }
   }
 }
