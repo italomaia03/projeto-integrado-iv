@@ -15,7 +15,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text(Database().usuarioLogado?.nome ?? ''),
+        title: Text(Database().usuarioLogado?.nome ?? '', style: TextStyle(
+          color: Colors.white,
+        ),
+        ),
         backgroundColor: Colors.blue[400],
       ),
       body: Padding(
@@ -36,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap: (){},
                           child: Ink(
-                            color: Color.fromARGB(255, 218, 218, 218),
+                            color: Color.fromRGBO(187, 229, 240, 1),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
