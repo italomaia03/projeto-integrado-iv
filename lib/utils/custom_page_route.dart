@@ -8,7 +8,7 @@ class CustomPageRoute extends PageRouteBuilder {
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) => 
+      Animation<double> secondaryAnimation, Widget child) =>
       FadeTransition(opacity: Tween<double>(
         begin: 0,
         end: 1,
