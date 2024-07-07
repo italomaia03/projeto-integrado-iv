@@ -15,19 +15,19 @@ class Database{
       codigo: 1,
       nome: 'Fabrício Freitas',
       email: 'fabricio@gmail.com',
-      senha: 'f123',
+      senha: 'Fabricio@40028922',
     ),
     Usuario(
       codigo: 2,
       nome: 'Ricardo Vilela',
       email: 'ricardo@gmail.com',
-      senha: 'r123',
+      senha: 'Ricardo@@40028922',
     ),
     Usuario(
       codigo: 3,
       nome: 'Allysson Alex',
       email: 'alex@gmail.com',
-      senha: 'a123',
+      senha: 'Alex@40028922',
     ),
   ];
 
