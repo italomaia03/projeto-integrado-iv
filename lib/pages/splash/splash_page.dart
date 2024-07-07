@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:somar/routes.dart';
+import 'package:flutter/services.dart';
 import 'package:somar/widgets/custom_logo.dart';
+import '../../routes.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -28,9 +29,17 @@ class _SplashPageState extends State<SplashPage> {
     Future.delayed(
       const Duration(seconds: 4),
       () {
-        Navigator.of(context).pushReplacementNamed(Routes.login);
+        Navigator.of(context)
+            .pushReplacementNamed(Routes.login);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.dispose();
   }
 
   @override
