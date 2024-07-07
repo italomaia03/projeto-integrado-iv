@@ -28,14 +28,12 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: status == 'ok' ? Colors.green : Colors.red,
       ),
     );
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(seconds: 1), () {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
   }
 
   void _login() {
-
-
     try {
       if (!_formKey.currentState!.validate()) {
         throw ValidationException('Preencha todos os campos de maneira adequada');
